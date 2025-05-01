@@ -16,6 +16,7 @@ def main(args):
     device = args.device
     steps = args.steps
     save_path = args.save_path
+    num_samples = args.num_samples    
 
     train_z, _, _, ckpt_path, info, num_inverse, cat_inverse = get_input_generate(args)
     in_dim = train_z.shape[1] 
@@ -33,8 +34,10 @@ def main(args):
     '''
     start_time = time.time()
 
-    num_samples = train_z.shape[0]
+    if num_samples is None or num_samples == 0:
+        num_samples = train_z.shape[0]
     sample_dim = in_dim
+    print(f'sampling {num_samples=}')
 
     x_next = sample(model.denoise_fn_D, num_samples, sample_dim)
     x_next = x_next * 2 + mean.to(device)
@@ -63,6 +66,8 @@ if __name__ == '__main__':
     parser.add_argument('--gpu', type=int, default=0, help='GPU index.')
     parser.add_argument('--epoch', type=int, default=None, help='Epoch.')
     parser.add_argument('--steps', type=int, default=None, help='Number of function evaluations.')
+    parser.add_argument('-n', '--num_samples', type=int, default=0,
+                        help='Number of rows to sample. Defaults to the training data size')     
 
     args = parser.parse_args()
 
