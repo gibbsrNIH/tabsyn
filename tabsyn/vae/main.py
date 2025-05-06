@@ -59,6 +59,7 @@ def main(args):
     max_beta = args.max_beta
     min_beta = args.min_beta
     lambd = args.lambd
+    batch_size = args.batch_size
 
     device =  args.device
 
@@ -94,7 +95,7 @@ def main(args):
     X_test_num = X_test_num.float().to(device)
     X_test_cat = X_test_cat.to(device)
 
-    batch_size = 4096
+    # batch_size = 4096
     train_loader = DataLoader(
         train_data,
         batch_size = batch_size,
@@ -221,6 +222,8 @@ if __name__ == '__main__':
     parser.add_argument('--max_beta', type=float, default=1e-2, help='Initial Beta.')
     parser.add_argument('--min_beta', type=float, default=1e-5, help='Minimum Beta.')
     parser.add_argument('--lambd', type=float, default=0.7, help='Decay of Beta.')
+    parser.add_argument('--batch_size', type=int, default=4096,
+                        help='Batch size. Must be an even number.')    
 
     args = parser.parse_args()
 

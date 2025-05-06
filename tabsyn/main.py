@@ -16,6 +16,7 @@ warnings.filterwarnings('ignore')
 
 def main(args): 
     device = args.device
+    batch_size = args.batch_size
 
     train_z, _, _, ckpt_path, _ = get_input_train(args)
 
@@ -32,7 +33,7 @@ def main(args):
     train_data = train_z
 
 
-    batch_size = 4096
+    # batch_size = 4096
     train_loader = DataLoader(
         train_data,
         batch_size = batch_size,
@@ -105,7 +106,9 @@ if __name__ == '__main__':
 
     parser.add_argument('--dataname', type=str, default='adult', help='Name of dataset.')
     parser.add_argument('--gpu', type=int, default=0, help='GPU index.')
-
+    parser.add_argument('--batch_size', type=int, default=4096,
+                        help='Batch size. Must be an even number.')
+    
     args = parser.parse_args()
 
     # check cuda
